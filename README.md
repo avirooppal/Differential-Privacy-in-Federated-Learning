@@ -6,7 +6,7 @@ main.py: Simulates 2 IoT devices sharing noisy local updates.
 
 main2.py: Measures how the DP error changes as the number of devices increases.
 
-📄 main.py — Basic FL + DP with Two Devices
+main.py — Basic FL + DP with Two Devices
 Scenario
 Two IoT devices (e.g., GPS trackers) collect 2D location data (latitude, longitude). They want to collaboratively build a global model (e.g., average location), without exposing their private data.
 
@@ -31,7 +31,7 @@ Protects privacy using Laplace Mechanism.
 
 Enables decentralized collaboration without raw data sharing.
 
-📄 main2.py — Effect of Number of Devices on DP Error
+main2.py — Effect of Number of Devices on DP Error
 Goal
 Quantify how increasing the number of devices reduces the error introduced by DP noise.
 

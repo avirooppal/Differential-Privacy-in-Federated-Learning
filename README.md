@@ -20,9 +20,7 @@ Differential Privacy: Laplace noise is added to each local update.
 Global Aggregation: The server averages the noisy updates to produce a global model.
 
 Code Summary
-python
-Copy
-Edit
+
 update = np.mean(device_data, axis=0)
 dp_update = update + Laplace_noise
 global_model = average(dp_update1, dp_update2)

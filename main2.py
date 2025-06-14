@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-np.random.seed(42) 
+np.random.seed(42)  
 
 def generate_device_data(n_samples=100):
     return np.random.rand(n_samples, 2)
@@ -38,7 +38,6 @@ for num_devices in device_counts:
     print("True Global Mean:", true_global)
     print("DP Global Mean  :", dp_global)
     print("Error (L2 norm) :", error)
-
 
 plt.figure(figsize=(8, 5))
 plt.plot(device_counts, errors, marker='o')

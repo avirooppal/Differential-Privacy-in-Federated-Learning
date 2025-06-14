@@ -1,71 +1,64 @@
-# Differential Privacy in Federated Learning with IoT Location Data
+Federated Learning with Differential Privacy for IoT Location Data
+Overview
+This project demonstrates Federated Learning (FL) combined with Differential Privacy (DP) on simulated GPS data from IoT devices. It includes two scripts:
 
-## Overview
+main.py: Simulates 2 IoT devices sharing noisy local updates.
 
-This script demonstrates a simple implementation of **Federated Learning (FL)** combined with **Differential Privacy (DP)** using data from two IoT devices. Each device collects GPS location data (latitude and longitude), trains a local model, adds DP noise, and contributes to a global model update without sharing raw data.
+main2.py: Measures how the DP error changes as the number of devices increases.
 
-## Scenario
+📄 main.py — Basic FL + DP with Two Devices
+Scenario
+Two IoT devices (e.g., GPS trackers) collect 2D location data (latitude, longitude). They want to collaboratively build a global model (e.g., average location), without exposing their private data.
 
-Imagine two IoT devices (e.g., smart collars on pets) collecting GPS coordinates over time. Each device wants to contribute to a shared model (e.g., to detect common movement patterns) without exposing its exact location data.
+How It Works
+Data Simulation: Each device generates 100 samples of 2D location data.
 
-## Code Breakdown
+Local Training: Devices compute the mean of their local data.
 
-1. **Data Simulation**
+Differential Privacy: Laplace noise is added to each local update.
 
-   ```python
-   device1_data = np.random.rand(100,2)
-   device2_data = np.random.rand(100,2)
-   ```
+Global Aggregation: The server averages the noisy updates to produce a global model.
 
-   * Simulates 100 samples of 2D location data (lat, long) for two devices.
+Code Summary
+python
+Copy
+Edit
+update = np.mean(device_data, axis=0)
+dp_update = update + Laplace_noise
+global_model = average(dp_update1, dp_update2)
+Key Points
+Protects privacy using Laplace Mechanism.
 
-2. **Local Training**
+Enables decentralized collaboration without raw data sharing.
 
-   ```python
-   def local_train(data):
-       return np.mean(data, axis=0)
-   ```
+📄 main2.py — Effect of Number of Devices on DP Error
+Goal
+Quantify how increasing the number of devices reduces the error introduced by DP noise.
 
-   * Each device computes the **mean location** as its local model update.
+What It Does
+Runs FL+DP with varying numbers of devices: [2, 5, 10, 20, 50, 100].
 
-3. **Differential Privacy (DP)**
+Each device trains locally and adds DP noise.
 
-   ```python
-   def add_dp_noise(update, epsilon=1.0, sensitivity=1.0):
-       scale = sensitivity / epsilon
-       noise = np.random.laplace(0, scale, size=update.shape)
-       return update + noise
-   ```
+Compares the DP global model with the true (non-noisy) global model using Euclidean distance.
 
-   * **Laplace noise** is added to each device's local update to ensure privacy.
-   * `epsilon` controls the privacy level (lower = more private).
+Plots the DP error vs number of devices.
 
-4. **Federated Averaging**
+Key Insight
+More devices → Better averaging → Lower overall noise effect → Smaller error.
 
-   ```python
-   global_model = (dp_update1 + dp_update2) / 2
-   ```
+Plot Example
+javascript
+Copy
+Edit
+Y-axis: Error (L2 norm between noisy and true global means)
+X-axis: Number of devices
+The plot shows that as the number of devices increases, the impact of noise diminishes.
 
-   * The server averages the DP-noised updates from both devices to get the **global model**.
+Summary
+This project shows how Federated Learning and Differential Privacy can be combined to enable privacy-preserving collaboration between IoT devices, especially for sensitive data like location.
 
-## Key Concepts
+Privacy Tradeoff
+ε (epsilon) controls privacy: smaller ε = more privacy, but more noise.
 
-* **Federated Learning (FL)**: Devices train locally and share only model updates.
-* **Differential Privacy (DP)**: Noise is added to updates so individual data points can't be inferred.
-* This combination enables **privacy-preserving collaboration** between devices.
-
-## Example Output
-
-```bash
-Update1 [0.51, 0.48]
-Update2 [0.50, 0.52]
-dp update1 [0.60, 0.41]
-dp update2 [0.47, 0.55]
-Global model: [0.53, 0.48]
-```
-
-Each device's contribution is masked by noise, but the global model still reflects useful aggregate information.
-
----
-
-
+Averaging across more devices reduces the distortion from noise.

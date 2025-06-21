@@ -74,3 +74,45 @@ This project shows how **Federated Learning** and **Differential Privacy** can b
   - Smaller ε → more noise → stronger privacy
   - Larger ε → less noise → higher accuracy
 - Averaging across more devices reduces the effect of individual noise, improving model quality.
+
+
+
+## `Federated Learning with Differential Privacy.ipynb`
+# Overview
+Dataset: MNIST (handwritten digits)
+
+Clients: 10 (each with a non-IID data split)
+
+Model: Simple fully connected network (784 → 10)
+
+Training: 20 communication rounds, 1 local epoch per client per round
+
+Privacy: Differential Privacy via gradient clipping and Gaussian noise addition
+
+# Training Configuration
+
+| Parameter         | Value                   |
+| ----------------- | ----------------------- |
+| Batch Size        | 32                      |
+| Learning Rate     | 0.1                     |
+| Gradient Clipping | 1.0 (L2 norm)           |
+| Noise Multipliers | 0.0, 0.1, 0.5, 1.0, 2.0 |
+
+# Final Accuracy by Noise Level
+
+| Noise Multiplier | Final Test Accuracy |
+| ---------------- | ------------------- |
+| 0.0              | 0.7592              |
+| 0.1              | 0.6720              |
+| 0.5              | 0.4627              |
+| 1.0              | 0.5084              |
+| 2.0              | 0.4518              |
+
+As expected, higher noise levels (stronger privacy) generally reduce model accuracy.
+
+# Privacy vs. Utility Trade-off
+![image](https://github.com/user-attachments/assets/529c6656-63f1-4de3-9b4a-31768ebf31d5)
+
+
+
+
